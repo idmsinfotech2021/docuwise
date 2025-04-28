@@ -12,6 +12,7 @@ const authRoutes = require('./routes/authRoutes');
 const extractedResultRoutes = require('./routes/extractedResultRoutes');
 const menuRoutes = require('./routes/menu');
 const tenantRoutes = require('./routes/tenant');
+const menuAddRoutes = require('./routes/menuRoutes');
 
 const { startAgenda } = require('./queues/agenda');
 const cors = require('cors');
@@ -37,6 +38,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/extracted-results', extractedResultRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/tenants', tenantRoutes);
+app.use('/api', menuAddRoutes);
+
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, { 
