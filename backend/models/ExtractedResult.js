@@ -6,7 +6,11 @@ const ExtractedResultSchema = new mongoose.Schema({
     uploadId: { type: mongoose.Schema.Types.ObjectId, ref: 'Upload', required: true },
     docType: { type: String, required: true },
     extractedData: { type: mongoose.Schema.Types.Mixed },
-    extractedAt: { type: Date, default: Date.now }
+    extractedAt: { type: Date, default: Date.now },
+    validationErrors: {
+        type: [String],
+        default: []
+    }
 });
 
 module.exports = mongoose.model('ExtractedResult', ExtractedResultSchema);

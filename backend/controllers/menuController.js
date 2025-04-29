@@ -89,3 +89,83 @@ exports.deleteMenuItem = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
+// Add SubMenu to a menu item
+exports.addSubMenu = async (req, res) => {
+  const { role, menuIndex } = req.params;
+  const { label, path, icon } = req.body;
+
+  try {
+    const menu = await Menu.findOne({ role });
+
+    if (!menu) {
+      return res.status(404).json({ message: 'Menu for role not found' });
+    }
+
+    if (!menu.menu[menuIndex]) {
+      return res.status(404).json({ message: 'Menu item not found' });
+    }
+
+    menu.menu[menuIndex].subMenus.push({ label, path, icon });
+    await menu.save();
+
+    res.json({ message: 'SubMenu added successfully' });
+  } catch (error) {
+    console.error('Error adding submenu:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+// Edit a SubMenu
+exports.editSubMenu = async (req, res) => {
+  const { role, menuIndex, subIndex } = req.params;
+  const { label, path, type } = req.body;
+
+  try {
+    const menu = await Menu.findOne({ role });
+
+    if (!menu) {
+      return res.status(404).json({ message: 'Menu for role not found' });
+    }
+
+    if (!menu.menu[menuIndex] || !menu.menu[menuIndex].subMenus[subIndex]) {
+      return res.status(404).json({ message: 'SubMenu item not found' });
+    }
+
+    menu.menu[menuIndex].subMenus[subIndex].label = label;
+    menu.menu[menuIndex].subMenus[subIndex].path = path;
+    menu.menu[menuIndex].subMenus[subIndex].type = type;
+
+    await menu.save();
+
+    res.json({ message: 'SubMenu updated successfully' });
+  } catch (error) {
+    console.error('Error editing submenu:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};
+
+// Delete a SubMenu
+exports.deleteSubMenu = async (req, res) => {
+  const { role, menuIndex, subIndex } = req.params;
+
+  try {
+    const menu = await Menu.findOne({ role });
+
+    if (!menu) {
+      return res.status(404).json({ message: 'Menu for role not found' });
+    }
+
+    if (!menu.menu[menuIndex] || !menu.menu[menuIndex].subMenus[subIndex]) {
+      return res.status(404).json({ message: 'SubMenu item not found' });
+    }
+
+    menu.menu[menuIndex].subMenus.splice(subIndex, 1);
+    await menu.save();
+
+    res.json({ message: 'SubMenu deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting submenu:', error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+};

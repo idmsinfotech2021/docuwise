@@ -6,6 +6,8 @@ const Prompt = require('../models/Prompt');
 const { callGeminiAPI } = require('../utils/geminiService');
 const { extractTextFromFile } = require('../utils/ocrService');
 const path = require('path');
+const { validateDocument } = require('../services/validationService');
+
 
 const agenda = new Agenda({
   db: {
@@ -78,16 +80,28 @@ agenda.define('process uploaded document', async (job) => {
       return;
     }
 
+    // Step 3.5: Validate Extracted Data (Post-Gemini)
+    const validationErrors = await validateDocument(upload.docType, extractedData);
+
+    
+
     // Step 4: Save Extracted Result
     await ExtractedResult.create({
       tenantId: upload.tenantId,
       uploadId: upload._id,
       docType: upload.docType,
-      extractedData
+      extractedData,
+      validationErrors: validationErrors
     });
 
     // Step 5: Update status
-    upload.status = 'completed';
+    // Decide upload status based on validation result
+    if (validationErrors.length > 0) {
+      upload.status = 'needs_correction';
+      upload.validationErrors = validationErrors;
+    } else {
+      upload.status = 'completed'; // Good data
+    }
     await upload.save();
 
     console.log(`[Agenda] Upload ${upload._id} processed successfully ✅`);
