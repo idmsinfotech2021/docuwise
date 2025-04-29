@@ -1,16 +1,24 @@
 // /models/ExtractedResult.js
 const mongoose = require('mongoose');
 
-const ExtractedResultSchema = new mongoose.Schema({
-    tenantId: { type: String, required: true },
-    uploadId: { type: mongoose.Schema.Types.ObjectId, ref: 'Upload', required: true },
-    docType: { type: String, required: true },
-    extractedData: { type: mongoose.Schema.Types.Mixed },
-    extractedAt: { type: Date, default: Date.now },
-    validationErrors: {
-        type: [String],
-        default: []
-    }
+const auditLogSchema = new mongoose.Schema({
+    fieldName: String,
+    oldValue: mongoose.Schema.Types.Mixed,   // allow any type
+    newValue: mongoose.Schema.Types.Mixed,
+    correctedBy: String,
+    correctedAt: Date
 });
 
-module.exports = mongoose.model('ExtractedResult', ExtractedResultSchema);
+
+
+const extractedResultSchema = new mongoose.Schema({
+    uploadId: { type: mongoose.Schema.Types.ObjectId, required: true },
+    tenantId: { type: String },
+    docType: { type: String },
+    extractedData: { type: mongoose.Schema.Types.Mixed },  // the main data blob
+    validationErrors: [String],
+    auditLogs: [auditLogSchema],
+    extractedAt: { type: Date, default: Date.now }
+});
+  
+  module.exports = mongoose.model('ExtractedResult', extractedResultSchema);

@@ -7,15 +7,26 @@ exports.getMenusByRole = async (req, res) => {
   const { role } = req.params;
   try {
     const menuDoc = await Menu.findOne({ role });
-    if (!menuDoc) {
-      return res.status(404).json([]);
-    }
-    res.status(200).json(menuDoc.menu);
+    if (!menuDoc) return res.status(404).json([]);
+
+    // Filter & sort top-level menus
+    const activeMenus = menuDoc.menu
+      .filter(menu => menu.status === 'Active')
+      .sort((a, b) => a.sequence - b.sequence)
+      .map(menu => ({
+        ...menu.toObject(),
+        subMenus: (menu.subMenus || [])
+          .filter(sub => sub.status === 'Active')
+          .sort((a, b) => a.sequence - b.sequence)
+      }));
+
+    res.status(200).json(activeMenus);
   } catch (error) {
     console.error('Error fetching menus:', error);
     res.status(500).json({ message: 'Server error' });
   }
 };
+
 
 // Add a New Menu Item
 exports.addMenuItem = async (req, res) => {

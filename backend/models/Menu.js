@@ -3,7 +3,9 @@ const mongoose = require('mongoose');
 const subMenuSchema = new mongoose.Schema({
   label: String,
   path: String,
-  icon: String
+  icon: String,
+  status: { type: String, enum: ['Active', 'Inactive'], default: 'Active' },
+  sequence: { type: Number, default: 0 }
 }, { _id: false });
 
 const menuItemSchema = new mongoose.Schema({
@@ -11,6 +13,8 @@ const menuItemSchema = new mongoose.Schema({
   path: String,
   icon: String,
   type: String, // 'link' or 'group'
+  status: { type: String, enum: ['Active', 'Inactive'], default: 'Active' },
+  sequence: { type: Number, default: 0 },
   subMenus: [subMenuSchema]
 }, { _id: false });
 

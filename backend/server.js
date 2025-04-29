@@ -14,6 +14,8 @@ const menuRoutes = require('./routes/menu');
 const tenantRoutes = require('./routes/tenant');
 const menuAddRoutes = require('./routes/menuRoutes');
 const validationRuleRoutes = require('./routes/validationRuleRoutes');
+const extractionRoutes = require('./routes/extractionRoutes'); // Adjust path as needed
+const dashboardRoutes = require('./routes/dashboardRoutes'); 
 
 const { startAgenda } = require('./queues/agenda');
 const cors = require('cors');
@@ -40,6 +42,9 @@ app.use('/api/extracted-results', extractedResultRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/tenants', tenantRoutes);
 app.use('/api/validation-rules', validationRuleRoutes);
+app.use('/api/extractions', extractionRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+
 app.use('/api', menuAddRoutes);
 
 

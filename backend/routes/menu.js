@@ -7,16 +7,52 @@ const Menu = require('../models/Menu');
 router.get('/:role', async (req, res) => {
   try {
     const { role } = req.params;
-    const menuData = await Menu.findOne({ role });
 
-    if (!menuData) {
-      return res.status(404).json({ message: 'Menu not found for the given role' });
+    const result = await Menu.aggregate([
+      { $match: { role } },  // Filter by role first
+      { $unwind: "$menu" },
+      { 
+        $match: { 
+          $or: [
+            { "menu.status": "Active" },
+            { "menu.status": { $exists: false } }
+          ]
+        }
+      },
+      {
+        $addFields: {
+          "menu.subMenus": {
+            $filter: {
+              input: "$menu.subMenus",
+              as: "sub",
+              cond: {
+                $or: [
+                  { $eq: ["$$sub.status", "Active"] },
+                  { $not: "$$sub.status" }
+                ]
+              }
+            }
+          }
+        }
+      },
+      { $sort: { "menu.sequence": 1 } },
+      {
+        $group: {
+          _id: "$_id",
+          role: { $first: "$role" },
+          menu: { $push: "$menu" }
+        }
+      }
+    ]);
+
+    if (!result.length) {
+      return res.status(404).json({ message: "No menus found for this role" });
     }
 
-    res.json(menuData.menu);
-  } catch (error) {
-    console.error('Error fetching menu:', error);
-    res.status(500).json({ message: 'Server Error' });
+    res.json(result[0].menu); // Return the menu array
+  } catch (err) {
+    console.error("Error in getActiveSortedMenuByRole:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 });
 
