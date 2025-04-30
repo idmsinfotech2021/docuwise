@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
+const path = require('path');
 
 const documentRoutes = require('./routes/documentRoutes');
 const promptRoutes = require('./routes/promptRoutes');
@@ -24,6 +25,7 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 app.use(cors()); // 👈 Allow CORS globally
+
 app.use('/api/uploads', uploadRoutes);
 
 
@@ -47,12 +49,16 @@ app.use('/api/dashboard', dashboardRoutes);
 
 app.use('/api', menuAddRoutes);
 
+// Serve static frontend in production
+app.use(express.static(path.join(__dirname, './../frontend/build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './../frontend/build/index.html'));
+});
+
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, { 
-  useNewUrlParser: true, 
-  useUnifiedTopology: true 
-})
+mongoose.connect(process.env.MONGO_URI)
 .then(() => {
     console.log('MongoDB Connected');
     startAgenda(); // Start Agenda after DB connection
