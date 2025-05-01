@@ -91,10 +91,7 @@ export default function ManagePrompt() {
   
 
   return (
-   <div className="main-content">
-      <div className="container mt-5">
-        <h3 className="text-center mb-4">Upload Customer PO</h3>
-         <div className="container mt-5">
+    <div className="container mt-5">
       <Toaster />
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h3>Manage Prompts</h3>
@@ -191,8 +188,6 @@ export default function ManagePrompt() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
-      </div>
     </div>
   );
 }

@@ -16,19 +16,19 @@ code {
    margin-left: 10px; /* same as sidebar width */
    padding: 20px;
    min-height: 90vh;
-   background-color: #f9f9f9;
+   /* background-color: #f9f9f9; */
 }
 
 .main-content1 {
    margin-left: 10px; /* same as sidebar width */
    padding: 5px;
    min-height: 100vh;
-   background-color: #f9f9f9;
+   /* background-color: #f9f9f9; */
 }
 
 .nav-link.active {
    font-weight: bold;
-   background: #e0f7fa;
+   /* background: #e0f7fa; */
    border-radius: 8px;
 }
 
@@ -56,7 +56,7 @@ code {
 body {
    margin: 0;
    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-   background: #f8f9fa;
+   /* background: #f8f9fa; */
  }
  
  .app-container {
@@ -66,7 +66,7 @@ body {
  
  .sidebar {
    width: 260px;
-   background: #f0f0f0;
+   /* background: #f0f0f0; */
    padding: 20px;
    border-right: 1px solid #ccc;
  }
@@ -149,13 +149,17 @@ input[type="checkbox"] {
 
 button {
   padding: 8px 16px;
-  background-color: #4CAF50;
+  background-color: #4f4caf;
   border: none;
   color: white;
   border-radius: 6px;
   font-size: 14px;
   cursor: pointer;
   margin-left: 5px;
+}
+
+button:first-child {
+  margin-right: 10px; /* Add space between buttons */
 }
 
 button:hover {
@@ -180,7 +184,7 @@ th {
 }
 
 td {
-  background-color: #fcfcfc;
+  /* background-color: #fcfcfc; */
 }
 
 .actions button {

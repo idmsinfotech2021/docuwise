@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axiosInstance from '../axiosConfig';
 
-export default function DocumentUploadLanding() {
+export default function DocumentUploadLanding({ menu }) {
   const [subMenus, setSubMenus] = useState([]);
 
   useEffect(() => {
@@ -11,7 +11,7 @@ export default function DocumentUploadLanding() {
       try {
         const role = localStorage.getItem('docuwise_role') || 'user';
         const response = await axiosInstance.get(`/menu/${role}`);
-        const documentUploadMenu = response.data.find(m => m.label === "Document Upload");
+        const documentUploadMenu = response.data.find(m => m.label === menu);
         if (documentUploadMenu && documentUploadMenu.subMenus) {
           setSubMenus(documentUploadMenu.subMenus);
         }

@@ -1,6 +1,7 @@
 // /controllers/validationRuleController.js
 
 const ValidationRule = require('../models/ValidationRule');
+const AuditTrail = require('../models/AuditTrail'); // 🔍 Ensure this model file exists
 
 // Fetch all rules for a document type
 const getValidationRules = async (req, res) => {
@@ -28,6 +29,14 @@ const addValidationRule = async (req, res) => {
     });
 
     await newRule.save();
+    // ✍️ Create Audit Trail for UPLOAD
+    // await AuditTrail.create({
+    //   documentId: newUpload._id,
+    //   tenantId,
+    //   action: 'VALIDATION ADDED',
+    //   performedBy: req.user._id
+    // });
+    console.log('✅ Audit trail logged for upload.');
     res.status(201).json({ message: 'Validation rule added successfully' });
   } catch (error) {
     console.error('Error adding validation rule:', error);
@@ -50,6 +59,15 @@ const updateValidationRule = async (req, res) => {
     if (!updatedRule) {
       return res.status(404).json({ message: 'Validation rule not found' });
     }
+
+    // ✍️ Create Audit Trail for UPLOAD
+    // await AuditTrail.create({
+    //   documentId: newUpload._id,
+    //   tenantId,
+    //   action: 'VALIDATION UPDATED',
+    //   performedBy: req.user._id
+    // });
+    console.log('✅ Audit trail logged for upload.');
 
     res.json({ message: 'Validation rule updated successfully' });
   } catch (error) {

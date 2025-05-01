@@ -23,7 +23,7 @@ export default function Sidebar() {
     <div style={{
       width: "280px",
       minHeight: "100vh",
-      background: "#f0f0f0",
+      // background: "#f0f0f0",
       padding: "20px",
       borderRight: "1px solid #ccc"
     }}>

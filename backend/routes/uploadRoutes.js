@@ -5,6 +5,7 @@ const fs = require('fs');
 const Upload = require('../models/Upload');
 const { agenda } = require('../queues/agenda'); // ✅ Import agenda object
 const { verifyUser } = require('../middlewares/authMiddleware');
+const AuditTrail = require('../models/AuditTrail'); // 🔍 Ensure this model file exists
 
 const router = express.Router();
 
@@ -65,6 +66,16 @@ router.post('/', verifyUser, upload.single('file'), async (req, res) => {
     });
 
     console.log('✅ Upload metadata saved successfully in database.');
+
+    // ✍️ Create Audit Trail for UPLOAD
+    await AuditTrail.create({
+      documentId: newUpload._id,
+      tenantId,
+      action: 'UPLOAD',
+      performedBy: req.user._id
+    });
+    console.log('✅ Audit trail logged for upload.');
+
 
     // ✅ After saving, immediately schedule Agenda Job
     await agenda.now('process uploaded document', { uploadId: newUpload._id });

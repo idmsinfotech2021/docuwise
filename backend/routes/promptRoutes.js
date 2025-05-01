@@ -3,7 +3,7 @@ const Prompt = require('../models/Prompt');
 const mongoose = require('mongoose');
 
 const router = express.Router();
-
+const AuditTrail = require('../models/AuditTrail'); // 🔍 Ensure this model file exists
 // Get all prompts
 router.get('/', async (req, res) => {
   try {
@@ -30,6 +30,15 @@ router.post('/', async (req, res) => {
      });
  
      await prompt.save();
+     // ✍️ Create Audit Trail for UPLOAD
+      await AuditTrail.create({
+        documentId: newUpload._id,
+        tenantId,
+        action: 'PROMPT ADDED',
+        performedBy: req.user._id
+      });
+      console.log('✅ Audit trail logged for upload.');
+
      res.status(201).json(prompt);
  
    } catch (error) {
@@ -47,6 +56,14 @@ router.patch('/:id', async (req, res) => {
       { promptText },
       { new: true }
     );
+    // ✍️ Create Audit Trail for UPLOAD
+    await AuditTrail.create({
+      documentId: newUpload._id,
+      tenantId,
+      action: 'PROMPT UPDATED',
+      performedBy: req.user._id
+    });
+    console.log('✅ Audit trail logged for upload.');
     res.status(200).json(updatedPrompt);
   } catch (err) {
     console.error('Error updating prompt:', err);

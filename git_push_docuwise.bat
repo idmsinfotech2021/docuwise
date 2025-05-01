@@ -1,25 +1,35 @@
 @echo off
-echo --------------------------------------
-echo Committing DocuWise backend + frontend
-echo --------------------------------------
+echo ============================
+echo Starting Git Push - DocuWise
+echo ============================
 
-REM Navigate to project root (optional: adjust path)
-cd /d D:\NIKHIL\01. Start Up\01. IDMS Infotech\03. Products\idp\Coding\DocuWise_POC
+REM Navigate to repo root (optional - ensure this is correct)
+cd /d "D:\NIKHIL\01. Start Up\01. IDMS Infotech\03. Products\idp\Coding\DocuWise_POC"
 
-REM Force add frontend and backend to track even if previously ignored
+REM Show current Git status
+echo.
+git status
+
+REM Add both folders
+echo.
+echo Adding frontend and backend...
 git add frontend
 git add backend
 
-REM Optional: also track other changed files
-git add .
+REM Commit with timestamped message
+echo.
+set datetime=%date% %time%
+git commit -m "Auto-push DocuWise changes - %datetime%"
 
-REM Ask for a commit message
-set /p commitMsg="Enter commit message: "
-git commit -m "%commitMsg%"
-
-REM Push to the current branch
+REM Push changes
+echo.
+echo Pushing to origin...
 git push
 
-echo --------------------------------------
-echo ✅ Code pushed successfully!
+REM Confirm completion
+echo.
+echo ============================
+echo Done! Changes pushed to GitHub.
+echo ============================
+
 pause

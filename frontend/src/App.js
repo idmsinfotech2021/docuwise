@@ -16,13 +16,20 @@ import UserLogin from './components/UserLogin';
 import UserDashboard from './components/UserDashboard';
 import SidebarLayout from "./components/SidebarLayout";    // new
 import DocumentUploadLanding from "./components/DocumentUploadLanding";    // new
+import AIGeneratorLandingPage from "./components/AIGeneratorLandingPage";    // new
 import MenuManager from "./components/MenuManager";    // new
 import ValidationRuleManager from './components/ValidationRuleManager';
 //import ValidationRuleManager from "./components/ValidationRuleManager ";    // new
 import ViewExtraction from './components/ViewExtraction'; 
 import ValidationDashboard from './components/ValidationDashboard'; 
+import TemplateUpload from './components/TemplateUpload';
+import SectionConfigurator from './components/SectionConfigurator';
+import QuestionConfigurator from './components/QuestionConfigurator';
+import ProposalWizard from './components/ProposalWizard';
+import ProposalQA from './components/ProposalQA';
 
 function App() {
+  
   return (
     <Router>
          <Routes>
@@ -35,12 +42,18 @@ function App() {
             <Route element={<SidebarLayout />}>
                <Route path="/user-dashboard" element={<UserDashboard />} />
                <Route path="/validate/:uploadId" element={<ViewExtraction />} />
-               <Route path="/document-upload" element={<DocumentUploadLanding />} />
+               <Route path="/document-upload" element={<DocumentUploadLanding menu="Document Upload" />} />
                <Route path="/upload-customer-po" element={<UploadCustomerPO />} />
                <Route path="/upload-invoice" element={<UploadInvoice />} />
                <Route path="/upload-coa" element={<UploadCOA />} />
                <Route path="/upload-tds-form" element={<UploadTDS />} />
                <Route path="/validation-dashboard" element={<ValidationDashboard />} />
+               <Route path="/ai-generators" element={<AIGeneratorLandingPage menu="AI Generators" />} />
+               <Route path="/upload-template" element={<TemplateUpload />} />
+               <Route path="/configure-section" element={<SectionConfigurator />} />
+               <Route path="/configure-question" element={<QuestionConfigurator />} />
+               <Route path="/proposal-wizard" element={<ProposalWizard />} />
+               <Route path="/proposal-wizard/:sessionId" element={<ProposalQA />} />
                <Route path="/" element={<DashboardCards />} />
             </Route>
 

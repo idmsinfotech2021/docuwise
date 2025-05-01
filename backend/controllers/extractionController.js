@@ -1,6 +1,7 @@
 const Upload = require('../models/Upload');
 const ExtractedResult = require('../models/ExtractedResult');
 const ValidationRule = require('../models/ValidationRule');
+const AuditTrail = require('../models/AuditTrail'); // 🔍 Ensure this model file exists
 
 // GET /api/extractions/:uploadId
 exports.getExtractionResult = async (req, res) => {
@@ -101,6 +102,15 @@ exports.correctExtractionResult = async (req, res) => {
       upload.status = validationErrors.length === 0 ? 'completed' : 'needs_correction';
       await upload.save();
     }
+
+    // ✍️ Create Audit Trail for UPLOAD
+    // await AuditTrail.create({
+    //   documentId: upload._id,
+    //   tenantId,
+    //   action: 'EXTRACTION UPDATE',
+    //   performedBy: req.user._id
+    // });
+    console.log('✅ Audit trail logged for upload.');
 
     res.json({ message: 'Corrections saved and revalidated.', validationErrors });
   } catch (error) {

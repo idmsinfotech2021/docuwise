@@ -5,6 +5,7 @@ const Upload = require('../models/Upload');
 const ExtractedResult = require('../models/ExtractedResult');
 const Prompt = require('../models/Prompt');
 const { agenda } = require('../queues/agenda');
+const AuditTrail = require('../models/AuditTrail'); // 🔍 Ensure this model file exists
 
 const uploadDocument = async (req, res) => {
     try {
@@ -25,6 +26,15 @@ const uploadDocument = async (req, res) => {
             tenantId,
             docType
         });
+
+        // ✍️ Create Audit Trail for UPLOAD
+        await AuditTrail.create({
+            documentId: upload._id,
+            tenantId,
+            action: 'DOCUMENT UPLOAD',
+            performedBy: req.user._id
+        });
+        console.log('✅ Audit trail logged for upload.');
 
         // Queue a background job
         await agenda.now('process uploaded document', { uploadId: upload._id });

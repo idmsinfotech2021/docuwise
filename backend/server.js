@@ -17,6 +17,11 @@ const menuAddRoutes = require('./routes/menuRoutes');
 const validationRuleRoutes = require('./routes/validationRuleRoutes');
 const extractionRoutes = require('./routes/extractionRoutes'); // Adjust path as needed
 const dashboardRoutes = require('./routes/dashboardRoutes'); 
+const templateRoutes = require('./routes/templateRoutes');
+const sectionRoutes = require('./routes/sectionConfigRoutes');
+const questionRoutes = require('./routes/questionConfigRoutes');
+const proposalSessionRoutes = require('./routes/proposalSessionRoutes');
+const proposalDocRoutes = require('./routes/proposalDocRoutes');
 
 const { startAgenda } = require('./queues/agenda');
 const cors = require('cors');
@@ -46,6 +51,11 @@ app.use('/api/tenants', tenantRoutes);
 app.use('/api/validation-rules', validationRuleRoutes);
 app.use('/api/extractions', extractionRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/proposal/template', templateRoutes);
+app.use('/api/proposal/section', sectionRoutes);
+app.use('/api/proposal/question', questionRoutes);
+app.use('/api/proposal', proposalSessionRoutes);
+app.use('/api/proposal', proposalDocRoutes);
 
 app.use('/api', menuAddRoutes);
 
