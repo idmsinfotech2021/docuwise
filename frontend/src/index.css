@@ -1,10 +1,20 @@
-body {
+/* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+} */
+:root {
+  --tenant-font: 'Roboto', sans-serif; /* fallback if JS fails */
+  --tenant-primary-color: #1a73e8;
+  --tenant-secondary-color: #f1f1f1;
+}
+
+body {
+  font-family: var(--tenant-font) !important;
+  background-color: var(--tenant-secondary-color);
 }
 
 code {
@@ -53,11 +63,6 @@ code {
 
 /* frontend/src/styles.css */
 
-body {
-   margin: 0;
-   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-   /* background: #f8f9fa; */
- }
  
  .app-container {
    display: flex;
@@ -189,4 +194,20 @@ td {
 
 .actions button {
   margin-right: 5px;
+}
+
+/* Example overrides */
+.btn-primary {
+  background-color: var(--tenant-primary-color);
+  border-color: var(--tenant-primary-color);
+}
+
+.btn-primary:hover {
+  background-color: var(--tenant-primary-color);
+  opacity: 0.9;
+}
+
+.nav-link.active {
+  /* background-color: var(--tenant-primary-color); */
+  color: #fff;
 }

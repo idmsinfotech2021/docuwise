@@ -40,6 +40,13 @@ const menus = [
         path: '/ai-generators',
         type: 'link',
         sequence: 4
+      },
+      {
+        label: 'Validation Dashboard',
+        icon: '📋',
+        path: '/validation-dashboard',
+        type: 'link',
+        sequence: 5
       }
     ]
   },
